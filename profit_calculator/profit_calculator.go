@@ -1,19 +1,43 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+	"os"
+)
 
 func main() {
 
-	revenue := getUserInput("Input revenue: ")
-	expense := getUserInput("Input expenses: ")
-	taxRate := getUserInput("Input tax rate: ")
+	revenue, err := getUserInput("Input revenue: ")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	expense, err := getUserInput("Input expenses: ")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	taxRate, err := getUserInput("Input tax rate: ")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	ebt, profit, ratio := calculateFinancialMetrics(revenue, expense, taxRate)
+	writeResult(ebt, profit, ratio)
 
 	fmt.Printf("EBT: %.2f\n", ebt)
 	fmt.Printf("Profit: %.2f\n", profit)
 	fmt.Printf("Ratio: %.3f\n", ratio)
 
+}
+
+func writeResult(ebt, profit, ratio float64) {
+	result := fmt.Sprintf("EBT: %.2f\nProfit: %.2f\nRatio: %.3f\n", ebt, profit, ratio)
+	os.WriteFile("result.txt", []byte(result), 0644)
 }
 
 func calculateFinancialMetrics(revenue, expense, taxRate float64) (float64, float64, float64) {
@@ -23,9 +47,14 @@ func calculateFinancialMetrics(revenue, expense, taxRate float64) (float64, floa
 	return ebt, profit, ratio
 }
 
-func getUserInput(labelText string) float64 {
+func getUserInput(labelText string) (float64, error) {
 	var userInput float64
 	fmt.Print(labelText)
 	fmt.Scan(&userInput)
-	return userInput
+
+	if userInput < 0 {
+		return 0, errors.New("invalid input. Please enter a positive number")
+	}
+
+	return userInput, nil
 }
