@@ -1,8 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"bank-app/utility"
+	"fmt"
+
+	"github.com/Pallinder/go-randomdata"
 )
 
 func main() {
@@ -15,6 +17,7 @@ func main() {
 	}
 
 	fmt.Println("Welcome to Go bank")
+	fmt.Printf("Contact us via hotline %s or email %s", randomdata.PhoneNumber(), randomdata.Email())
 	for {
 		printOptions()
 
