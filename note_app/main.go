@@ -4,9 +4,23 @@ import (
 	"bufio"
 	"fmt"
 	"note-app/note"
+	"note-app/todo"
 	"os"
 	"strings"
 )
+
+type saver interface {
+	Save() error
+}
+
+type displayer interface {
+	Display()
+}
+
+type outputable interface {
+	saver
+	displayer
+}
 
 func main() {
 	title, content := getUserNote()
@@ -17,8 +31,15 @@ func main() {
 		return
 	}
 
-	note.ToString()
-	note.Save()
+	outputData(note)
+
+	todoText := getUserInput("Input todo text: ")
+	todo, err := todo.New(todoText)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	outputData(todo)
 }
 
 func getUserNote() (string, string) {
@@ -41,4 +62,18 @@ func getUserInput(prompt string) string {
 	text = strings.TrimSuffix(text, "\r")
 
 	return text
+}
+
+func saveData(data saver) {
+	err := data.Save()
+	if err != nil {
+		fmt.Printf("Error when saving data to file, %s\n", err)
+		return
+	}
+	fmt.Println("Save to file successfully")
+}
+
+func outputData(data outputable) {
+	data.Display()
+	saveData(data)
 }

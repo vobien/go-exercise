@@ -27,7 +27,7 @@ func New(title, content string) (*Note, error) {
 	}, nil
 }
 
-func (note Note) ToString() {
+func (note Note) Display() {
 	fmt.Printf("Title: %s, Content: %s\n", note.Title, note.Content)
 }
 
