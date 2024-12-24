@@ -2,43 +2,54 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
-type Product struct {
-	title string
-	id string
-	price float64
-}
+type funcType func(int) float64
 
 func main() {
-	hobbies := [3]string{"coding", "reading", "fucking"}
-	fmt.Println(hobbies)
 
-	fmt.Println(hobbies[0])
-	fmt.Println(hobbies[1:])
+	// urlMap := map[string] string {}
+	// urlMap["java"] = "https://www.java.com"
+	// urlMap["go"] = "https://www.go.com"
 
-	slices := hobbies[0:2]
-	fmt.Println(slices)
+	// for k, v := range urlMap {
+	// 	fmt.Println(k, v)
+	// }
 
-	slices = hobbies[1:]
-	fmt.Println(slices)
+	// // allocate memory for slice
+	// courses := make([]string, 3)
+	// courses[0] = "go"
+	// courses[1] = "python"
+	// courses[2] = "java"
 
-	courses := []string{"go", "python", "java"}
-	fmt.Println(courses)
+	// courses = append(courses, "rust")
 
-	courses[1] = "rust"
-	fmt.Println(courses)
+	// fmt.Println(courses)
+	// fmt.Println(len(courses), cap(courses))
 
-	courses = append(courses, "javascript")
-	fmt.Println(courses)
+	// // array
+	// otherCourses := [3]string{"go", "python", "java"}
+	// fmt.Println(otherCourses)
+	// fmt.Println(len(otherCourses), cap(otherCourses))
 
+	nums := []int{1, 2, 3, 4, 5}
+	calculate(nums, double)
+	calculate(nums, triple)
 
-	products := []Product {
-		Product{"linux", "1", 100.0},
-		Product{"go", "2", 200.0},
+}
+
+func calculate(nums []int, function funcType) {
+	for _, num := range nums {
+		fmt.Printf("%v ", function(num))
 	}
-	fmt.Println(products)
+	fmt.Println()
+}
 
-	products = append(products, Product{"rust", "3", 300.0})
-	fmt.Println(products)
+func double(x int) float64 {
+	return float64(x * 2)
+}
+
+func triple(x int) float64 {
+	return math.Pow(float64(x), float64(3))
 }
