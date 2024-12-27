@@ -27,18 +27,22 @@ func (t *TaxIncludedPrice) LoadData() error {
 	return nil
 }
 
-func (t *TaxIncludedPrice) Process() error {
+func (t *TaxIncludedPrice) Process(doneChan chan bool, errorChan chan error) {
 	err := t.LoadData()
 	if err != nil {
-		return err
+		errorChan <- err
 	}
 
 	t.PriceIncludedTax = make([]string, len(t.InputPrices))
 	for i, price := range t.InputPrices {
 		t.PriceIncludedTax[i] = fmt.Sprintf("%.2f", price*(1+t.Tax))
 	}
-	
-	return t.IOManager.Write(t)
+
+	err = t.IOManager.Write(t)
+	if err != nil {
+		errorChan <- err
+	}
+	doneChan <- true
 }
 
 func New(tax float64, ioManager io_manager.IOManager) *TaxIncludedPrice {

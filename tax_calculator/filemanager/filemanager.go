@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
+	"time"
 )
 
 type FileManager struct {
@@ -51,9 +52,10 @@ func (fm FileManager) Write(data interface{}) error {
 
 	defer file.Close()
 
+	time.Sleep(3 * time.Second)
+
 	err = json.NewEncoder(file).Encode(data)
 	if err != nil {
-		file.Close()
 		return errors.New("error writing to file")
 	}
 
