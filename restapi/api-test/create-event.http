@@ -1,0 +1,11 @@
+// Must install Extension REST client
+POST http://localhost:8085/event
+Content-Type: application/json
+
+{
+    "name": "Test event",
+    "description": "a test event",
+    "location": "a test location",
+    "dateTime": "2025-01-02T00:00:00.000Z"
+}
+
